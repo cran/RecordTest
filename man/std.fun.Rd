@@ -4,8 +4,14 @@
 \alias{std.fun}
 \title{Removing  seasonal  components of a vector}
 \usage{
-std.fun(X_T, method = "moving", Nyear, day.year = NULL,
-  harmonics = 3, window = 3)
+std.fun(
+  X_T,
+  method = "moving",
+  Nyear,
+  day.year = NULL,
+  harmonics = 3,
+  window = 3
+)
 }
 \arguments{
 \item{X_T}{A numeric vector.}

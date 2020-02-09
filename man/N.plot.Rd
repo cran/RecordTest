@@ -4,8 +4,15 @@
 \alias{N.plot}
 \title{Plot of the  mean number of records  up to time t}
 \usage{
-N.plot(XM_T, record = "both", interval = "ribbon", conf = 0.95,
-  bootstrap = FALSE, samples = 1000, colour = "salmon")
+N.plot(
+  XM_T,
+  record = "both",
+  interval = "ribbon",
+  conf = 0.95,
+  bootstrap = FALSE,
+  samples = 1000,
+  colour = "salmon"
+)
 }
 \arguments{
 \item{XM_T}{A  matrix.}

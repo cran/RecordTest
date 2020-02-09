@@ -1,12 +1,13 @@
 #' @name P_exactPB.test
 #' @rdname P_exactPB.test
 #' @title Exact Poisson binomial  test on  record probabilities
-#' @importFrom Smisc pkbinom
-#'
+#' @importFrom stats fft
+#' @importFrom stats dbinom
 #' @description This function performs an exact test  based on the record probabiliteis \eqn{p_t} to study the hypothesis of the classical record model.
 #' @details The null  hypothesis  of this likelihood ratio test is that  in all the vectors (columns of matrix \code{XM_T}), the probability of record at time \eqn{t} is \eqn{1/t}.
 #' The test statistic is the  total  number of records at times \eqn{t=2, ..., T}, in  the \eqn{M} vectors. Under the null, this is the sum of \eqn{M(T-1)} independent Bernoulli variables,
-#' with probabilities \eqn{p_2, ...,p_2, ..., p_T, ...p_T} with \eqn{p_t=1/t}, so that its distribution is  a Poisson-Binomial.
+#' with probabilities \eqn{p_2, ...,p_2, ..., p_T, ...p_T} with \eqn{p_t=1/t}, so that its distribution is a Poisson-Binomial 
+#' (calculated numerically by the fast Fourier transform as in \code{pkbinom} function of the archived \code{Smisc} package). 
 #'
 #'
 #'  Only unilateral  alternative hypotehesis \eqn{p_t > 1/t, t=2, ..., T}  or  \eqn{p_t <1/t, t=2, ..., T} are valid, since
@@ -16,25 +17,21 @@
 #' at time \eqn{t=1} (by definition of \eqn{N_t}), but the p-value  is the same.
 #' @param XM_T A  matrix.
 #' @param record A character string indicating the type of record to be calculated, "upper" or "lower".
-#' @param method A character string indicating  the method  to calculate the Poisson binomial
-#' distribution,  \code{"butler"}, \code{"naive"} or \code{"fft"}. See argument  \code{method} in \code{\link[Smisc]{pkbinom}}.
-#' @return A  \code{"htest"} object  with elements:
+#' @return A \code{"htest"} object with elements:
 #' \item{statistic}{Value of the likelihood ratio statistic.}
 #' \item{parameter}{Number of Bernoulli independent variables summed in the statistic.}
 #' \item{p.value}{P-value.}
 #' \item{method}{A character string indicating the type of test performed.}
 #' \item{data.name}{A character string giving the name of the data.}
-#' @seealso  \code{\link{P_chisq.test}},\code{\link{P_regression.test}}
+#' @seealso \code{\link{P_chisq.test}}, \code{\link{P_regression.test}}
 
 #' @examples
-#' P_exactPB.test(ZaragozaSeries)
+#' P_exactPB.test(ZaragozaSeries[,1:50])
 #' N_exactPB.test(ZaragozaSeries[,23])
 
-#' @rdname P_exactPB.test
 #' @export P_exactPB.test
 
-
-P_exactPB.test <- function(XM_T, record='upper', method = 'butler'){
+P_exactPB.test <- function(XM_T, record='upper'){
   DNAME <- deparse(substitute(XM_T))
 
   XM_T <- as.matrix(XM_T)
@@ -47,11 +44,11 @@ P_exactPB.test <- function(XM_T, record='upper', method = 'butler'){
 
   if(record=='lower'){
     METHOD <- "(lower) Record indicator's exact test"
-    pvalue <- pkbinom(MN0-1,size=rep(Mcols,Trows_),prob=1/(2:Trows), method = method)
+    pvalue <- pkbinom(MN0-1,size=rep(Mcols,Trows_),prob=1/(2:Trows))
   }
   else{
     METHOD <- "Record indicator's exact test"
-    pvalue <- 1 - pkbinom(MN0,size=rep(Mcols,Trows_),prob=1/(2:Trows), method = method)
+    pvalue <- 1 - pkbinom(MN0,size=rep(Mcols,Trows_),prob=1/(2:Trows))
   }
 
   names(MN0) <- "Poisson-Binomial"
@@ -65,7 +62,7 @@ P_exactPB.test <- function(XM_T, record='upper', method = 'butler'){
 #' @rdname P_exactPB.test
 #' @export N_exactPB.test
 
-N_exactPB.test <- function(XM_T, record = 'upper', method = 'butler'){
+N_exactPB.test <- function(XM_T, record = 'upper'){
   DNAME <- deparse(substitute(XM_T))
 
   Trows <- length(XM_T)
@@ -74,11 +71,11 @@ N_exactPB.test <- function(XM_T, record = 'upper', method = 'butler'){
 
   if(record=='lower'){
     METHOD <- "(lower) Record counting process' exact test"
-    pvalue <- pkbinom(NT0-1,size=rep(1,Trows),prob=1/1:Trows, method = method)
+    pvalue <- pkbinom(NT0-1,size=rep(1,Trows),prob=1/1:Trows)
   }
   else{
     METHOD <- "Record counting process' exact test"
-    pvalue <- 1 - pkbinom(NT0,size=rep(1,Trows),prob=1/1:Trows, method = method)
+    pvalue <- 1 - pkbinom(NT0,size=rep(1,Trows),prob=1/1:Trows)
   }
 
   names(NT0) <- "Poisson-Binomial"
@@ -88,3 +85,69 @@ N_exactPB.test <- function(XM_T, record = 'upper', method = 'butler'){
                  p.value = pvalue, method = METHOD, data.name = DNAME),class='htest')
 }
 
+
+dkbinom <- function(x, size, prob) {
+  
+    dkb <- function(x, size, prob) {
+      
+      A <- dbinom(0:x, size[1], prob[1])
+      
+      B <- dbinom(0:x, size[2], prob[2])
+      
+      conv <- cvolve(A, B)
+      
+      if (length(size) > 2) {
+        
+        for(i in 3:length(size)){
+          
+          A <- conv
+          
+          B <- dbinom(0:x, size[i], prob[i])
+          
+          conv <- cvolve(A,B)
+        }
+        
+        res <- conv[length(conv)]
+        
+      } else {
+        
+        res <- conv[length(conv)]
+      } 
+      
+      res <- abs(res)
+      
+      return(res)
+    } 
+    
+    res <- unlist(lapply(x, function(q) dkb(q, size, prob)))
+    
+  return(res)
+} 
+
+
+pkbinom <- function(q, size, prob){
+    
+    dkCall <- function(x) dkbinom(x, size, prob)
+    
+    res <- unlist(lapply(q, function(k) sum(unlist(lapply(0:k, dkCall)))))
+  
+  return(res)
+  
+} 
+
+
+cvolve <- function(x, y) {
+  
+  preLength <- length(x)
+  
+  n <- length(x) + length(y) - 1
+  
+  x <- c(x, rep(0, n - length(x)))
+  
+  y <- c(y, rep(0, n - length(y)))
+  
+  out <- Re(fft(fft(x) * fft(y), inverse = TRUE)) / n
+  
+  return(out[1:preLength])
+  
+}

@@ -4,8 +4,14 @@
 \alias{dailysd.fun}
 \title{Seasonal pattern  of the standar deviation}
 \usage{
-dailysd.fun(X_T, method = "moving", Nyear, day.year = NULL,
-  harmonics = 3, window = 3)
+dailysd.fun(
+  X_T,
+  method = "moving",
+  Nyear,
+  day.year = NULL,
+  harmonics = 3,
+  window = 3
+)
 }
 \arguments{
 \item{X_T}{A numeric vector  of daily observations.   Its length  has to be higher than 365.}

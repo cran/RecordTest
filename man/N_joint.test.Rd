@@ -4,8 +4,7 @@
 \alias{N_joint.test}
 \title{Monte Carlo test on the number of upper and lower records}
 \usage{
-N_joint.test(XM_T, stand = FALSE, samples = 1000,
-  trend = "increasing")
+N_joint.test(XM_T, stand = FALSE, samples = 1000, trend = "increasing")
 }
 \arguments{
 \item{XM_T}{A  matrix.}

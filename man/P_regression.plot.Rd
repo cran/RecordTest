@@ -4,10 +4,17 @@
 \alias{P_regression.plot}
 \title{Plot of  record probabilities}
 \usage{
-P_regression.plot(XM_T, record = "upper", plot = 2,
-  interval = "ribbon", conf = 0.95, samples = 5000,
-  colour_point = "black", colour_CI = "salmon",
-  color_lm = "royalblue4")
+P_regression.plot(
+  XM_T,
+  record = "upper",
+  plot = 2,
+  interval = "ribbon",
+  conf = 0.95,
+  samples = 5000,
+  colour_point = "black",
+  colour_CI = "salmon",
+  color_lm = "royalblue4"
+)
 }
 \arguments{
 \item{XM_T}{A matrix.}

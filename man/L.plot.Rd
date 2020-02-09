@@ -4,8 +4,13 @@
 \alias{L.plot}
 \title{Plot of the  times of record}
 \usage{
-L.plot(XM_T, record = "upper", backward = FALSE,
-  colour_point = "salmon", colour_line = "grey95")
+L.plot(
+  XM_T,
+  record = "upper",
+  backward = FALSE,
+  colour_point = "salmon",
+  colour_line = "grey95"
+)
 }
 \arguments{
 \item{XM_T}{A numeric vector or matrix.}

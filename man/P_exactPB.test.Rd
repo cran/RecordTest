@@ -5,20 +5,17 @@
 \alias{N_exactPB.test}
 \title{Exact Poisson binomial  test on  record probabilities}
 \usage{
-P_exactPB.test(XM_T, record = "upper", method = "butler")
+P_exactPB.test(XM_T, record = "upper")
 
-N_exactPB.test(XM_T, record = "upper", method = "butler")
+N_exactPB.test(XM_T, record = "upper")
 }
 \arguments{
 \item{XM_T}{A  matrix.}
 
 \item{record}{A character string indicating the type of record to be calculated, "upper" or "lower".}
-
-\item{method}{A character string indicating  the method  to calculate the Poisson binomial
-distribution,  \code{"butler"}, \code{"naive"} or \code{"fft"}. See argument  \code{method} in \code{\link[Smisc]{pkbinom}}.}
 }
 \value{
-A  \code{"htest"} object  with elements:
+A \code{"htest"} object with elements:
 \item{statistic}{Value of the likelihood ratio statistic.}
 \item{parameter}{Number of Bernoulli independent variables summed in the statistic.}
 \item{p.value}{P-value.}
@@ -31,7 +28,8 @@ This function performs an exact test  based on the record probabiliteis \eqn{p_t
 \details{
 The null  hypothesis  of this likelihood ratio test is that  in all the vectors (columns of matrix \code{XM_T}), the probability of record at time \eqn{t} is \eqn{1/t}.
 The test statistic is the  total  number of records at times \eqn{t=2, ..., T}, in  the \eqn{M} vectors. Under the null, this is the sum of \eqn{M(T-1)} independent Bernoulli variables,
-with probabilities \eqn{p_2, ...,p_2, ..., p_T, ...p_T} with \eqn{p_t=1/t}, so that its distribution is  a Poisson-Binomial.
+with probabilities \eqn{p_2, ...,p_2, ..., p_T, ...p_T} with \eqn{p_t=1/t}, so that its distribution is a Poisson-Binomial 
+(calculated numerically by the fast Fourier transform as in \code{pkbinom} function of the archived \code{Smisc} package). 
 
 
  Only unilateral  alternative hypotehesis \eqn{p_t > 1/t, t=2, ..., T}  or  \eqn{p_t <1/t, t=2, ..., T} are valid, since
@@ -41,9 +39,9 @@ with probabilities \eqn{p_2, ...,p_2, ..., p_T, ...p_T} with \eqn{p_t=1/t}, so t
 at time \eqn{t=1} (by definition of \eqn{N_t}), but the p-value  is the same.
 }
 \examples{
-P_exactPB.test(ZaragozaSeries)
+P_exactPB.test(ZaragozaSeries[,1:50])
 N_exactPB.test(ZaragozaSeries[,23])
 }
 \seealso{
-\code{\link{P_chisq.test}},\code{\link{P_regression.test}}
+\code{\link{P_chisq.test}}, \code{\link{P_regression.test}}
 }

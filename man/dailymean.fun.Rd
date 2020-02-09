@@ -4,8 +4,14 @@
 \alias{dailymean.fun}
 \title{Seasonal pattern  of the mean values}
 \usage{
-dailymean.fun(X_T, method = "moving", Nyear, day.year = NULL,
-  harmonics = 3, window = 3)
+dailymean.fun(
+  X_T,
+  method = "moving",
+  Nyear,
+  day.year = NULL,
+  harmonics = 3,
+  window = 3
+)
 }
 \arguments{
 \item{X_T}{A numeric vector  of daily observations.   Its length  has to be higher than 365.}

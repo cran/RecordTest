@@ -1,14 +1,14 @@
-#' @title Regression test on  record probabilities
-#' @importFrom car linearHypothesis
+#' @title Regression test on record probabilities
+#' @importFrom stats df
 #' @importFrom stats lm
 #' @importFrom stats coef
 #' @description This function performs a  test   based on a regression on the  record probabilities \eqn{p_t} to study the hypothesis of the classical record model.
-#' @details The null  hypothesis  of this likelihood ratio test is that  in all the vectors (columns in matrix \code{XM_T}), the probability of record at time \eqn{t} is \eqn{1/t},
-#'  so that  \eqn{tp_t=1}. Then,   hypothesis \eqn{H_0: p_t=1/t,  \ t=2, ..., T} is equivalent to \eqn{H_0: \beta_0=1,\beta_1=0}
+#' @details The null  hypothesis of this regression test is that in all the vectors (columns in matrix \code{XM_T}), the probability of record at time \eqn{t} is \eqn{1/t},
+#' so that \eqn{tp_t=1}. Then,   hypothesis \eqn{H_0: p_t=1/t,  \ t=2, ..., T} is equivalent to \eqn{H_0: \beta_0=1,\beta_1=0}
 #' where  \eqn{\beta_0}  and \eqn{\beta_1} are the coefficients of the regression model \eqn{t  p_t=\beta_0+ \beta_1  t}.
 #' The  model has to be estimated by weighted  least squares since the response is heteroskedastic.
 #'
-#' The  F statistic is used to compare the regression model under the null and a linear regression model with no restriction (the alterantive hypotehsis is then that
+#' The  F statistic is used to compare the regression model under the null hypothesis and a linear regression model with no restriction (the alterantive hypotehsis is then that
 #' \eqn{tp_t} is a linear function of time). This alternative hypotehsis may be reasonable in  many real examples, but not always.
 #'
 #' @param XM_T A  matrix
@@ -42,9 +42,9 @@ P_regression.test <- function(XM_T, record = 'upper'){
   t <- 2:Trows
   t.Pt_ <- t*Pt_
 
-  model <- lm(t.Pt_~t, weights = VAR)
+  model <- lm(t.Pt_~t, weights = VAR, y = TRUE)
 
-  pv <- linearHypothesis(model, matrix(c(1,0,0,1), 2, 2, byrow=TRUE), rhs=c(1,0))[[6]][2]
+  pv <- linearHypothesis(model)
 
   intercept <- coef(model)[1]
   coefficient <- coef(model)[2]
@@ -54,4 +54,17 @@ P_regression.test <- function(XM_T, record = 'upper'){
 
   structure(list(intercept = intercept, slope = coefficient,
                  p.value = pv, method = METHOD, data.name = DNAME), class='htest')
+}
+
+linearHypothesis <- function(lm){
+  
+  y_mean <- mean(lm$y)
+  
+  n <- length(lm$y)
+  
+  df <- lm$df.residual
+  
+  observed_value <- ( sum((1-lm$y)^2) - sum(lm$residuals^2) ) / ( 2 * sum(lm$residuals^2) / df )
+  
+  return(df(observed_value, df1 = 2, df2 = df))
 }

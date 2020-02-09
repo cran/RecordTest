@@ -4,8 +4,14 @@
 \alias{N_joint.plot}
 \title{Plot of the  difference (or ratio) between the number of upper and lower records}
 \usage{
-N_joint.plot(XM_T, type = "ratio", interval = "ribbon", conf = 0.95,
-  samples = 1000, colour = "salmon")
+N_joint.plot(
+  XM_T,
+  type = "ratio",
+  interval = "ribbon",
+  conf = 0.95,
+  samples = 1000,
+  colour = "salmon"
+)
 }
 \arguments{
 \item{XM_T}{A  matrix.}

@@ -21,7 +21,6 @@
 #' N.rec(Y1)
 #' N.rec.matrix(cbind(Y1,Y2,Y3))
 #'
-#' @rdname N.rec
 #' @export N.rec
 
 N.rec <- function(X_T, record = 'upper'){

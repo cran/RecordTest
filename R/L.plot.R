@@ -15,8 +15,6 @@
 #' @seealso \code{\link{L.rec}}, \code{\link{L_lr.test}}
 #' @export L.plot
 
-
-
 #' @examples
 #'
 #' Y1<-c(1,5,3,6,6,9,2, 11, 17, 8)

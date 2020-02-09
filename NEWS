@@ -1,0 +1,5 @@
+Changes to RecordTest Version 0.1.2
+
+  o  Small changes.
+  o  Smisc package dependency removed (used to calculate the Poisson-Binomial probability in P_exactPB.test) due to the archival of the package.
+  o  Car package dependency removed (used to calculate the p-value in P_regression.test). Instead, a new internal function has been developed.

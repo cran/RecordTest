@@ -2,7 +2,7 @@
 % Please edit documentation in R/P_regression.test.R
 \name{P_regression.test}
 \alias{P_regression.test}
-\title{Regression test on  record probabilities}
+\title{Regression test on record probabilities}
 \usage{
 P_regression.test(XM_T, record = "upper")
 }
@@ -24,12 +24,12 @@ A  \code{"htest"} object  with elements:
 This function performs a  test   based on a regression on the  record probabilities \eqn{p_t} to study the hypothesis of the classical record model.
 }
 \details{
-The null  hypothesis  of this likelihood ratio test is that  in all the vectors (columns in matrix \code{XM_T}), the probability of record at time \eqn{t} is \eqn{1/t},
- so that  \eqn{tp_t=1}. Then,   hypothesis \eqn{H_0: p_t=1/t,  \ t=2, ..., T} is equivalent to \eqn{H_0: \beta_0=1,\beta_1=0}
+The null  hypothesis of this regression test is that in all the vectors (columns in matrix \code{XM_T}), the probability of record at time \eqn{t} is \eqn{1/t},
+so that \eqn{tp_t=1}. Then,   hypothesis \eqn{H_0: p_t=1/t,  \ t=2, ..., T} is equivalent to \eqn{H_0: \beta_0=1,\beta_1=0}
 where  \eqn{\beta_0}  and \eqn{\beta_1} are the coefficients of the regression model \eqn{t  p_t=\beta_0+ \beta_1  t}.
 The  model has to be estimated by weighted  least squares since the response is heteroskedastic.
 
-The  F statistic is used to compare the regression model under the null and a linear regression model with no restriction (the alterantive hypotehsis is then that
+The  F statistic is used to compare the regression model under the null hypothesis and a linear regression model with no restriction (the alterantive hypotehsis is then that
 \eqn{tp_t} is a linear function of time). This alternative hypotehsis may be reasonable in  many real examples, but not always.
 }
 \examples{
