@@ -2,64 +2,86 @@
 % Please edit documentation in R/P_regression.plot.R
 \name{P_regression.plot}
 \alias{P_regression.plot}
-\title{Plot of  record probabilities}
+\title{Plot of record probabilities}
 \usage{
 P_regression.plot(
   XM_T,
-  record = "upper",
-  plot = 2,
-  interval = "ribbon",
+  record = c("upper", "lower"),
+  plot = 1,
+  interval = c("ribbon", "errorbar"),
   conf = 0.95,
-  samples = 5000,
+  weight = TRUE,
   colour_point = "black",
   colour_CI = "salmon",
-  color_lm = "royalblue4"
+  colour_lm = "royalblue4"
 )
 }
 \arguments{
-\item{XM_T}{A matrix.}
+\item{XM_T}{A numeric vector, matrix (or data frame).}
 
-\item{record}{A character string indicating the type of record to be calculated, \code{"upper"} or \code{"lower"}.}
+\item{record}{A character string indicating the type of record to be 
+calculated, \code{"upper"} or \code{"lower"}.}
 
-\item{plot}{One of the values 1, 2 or 3. It determines the type of plot to be displayed.   See Details.}
+\item{plot}{One of the values 1, 2 or 3. It determines the type of plot to
+be displayed. See Details.}
 
-\item{interval}{A character string indicating the type of display of the confidence intervals,  \code{"ribbon"} (grey area) or \code{"errorbar"} (vertical lines).}
+\item{interval}{A character string indicating the type of display of the
+confidence intervals, \code{"ribbon"} (grey area) or \code{"errorbar"}
+(vertical lines).}
 
-\item{conf}{Numeric value in (0,1). Confidence level of the confidence intervals.}
+\item{conf}{Numeric value in (0,1). Confidence level of the confidence
+intervals.}
 
-\item{samples}{An integer  giving the number of replicates used  to calculate Monte Carlo  CI.}
+\item{weight}{logical. If \code{TRUE} (the default) the regression line is
+estimated with weights. Only used if \code{plot = 1}.}
 
-\item{colour_point}{Colour used to plot the points. See  \code{\link{ggplot}} for valid values.}
+\item{colour_point}{Colour used to plot the points.}
 
-\item{colour_CI}{Colour used to plot the expected values  and the CI.}
+\item{colour_CI}{Colour used to plot the expected values and the CI.}
 
-\item{color_lm}{Colour used to plot the regression line. Only  used if \code{plot==2}.}
+\item{colour_lm}{Colour used to plot the regression line. Only used if
+\code{plot = 1}.}
 }
 \value{
 A ggplot object.
 }
 \description{
-This function constructs a ggplot object  to display different functions of the  record probabilities at time t, \eqn{p_t}.
+This function constructs a ggplot object to display different 
+  functions of the record probabilities at time \eqn{t}, \eqn{p_t}.
 }
 \details{
-Three different types of plots which aim to analyse the hypothesis of the record classic model  using the record probabilities
-are implemented. Estimations of the record probabilities \eqn{\hat p_t} used in the plots are obtained as the proportion of records at time t
-in M vectors (columns of matrix \code{XM_T}).
+Three different types of plots which aim to analyse the hypothesis
+  of the classical record model using the record probabilities are 
+  implemented. Estimations of the record probabilities \eqn{\hat p_t} used
+  in the plots are obtained as the proportion of records at time \eqn{t}
+  in \eqn{M} vectors (columns of matrix \code{XM_T}).
 
-Type 1 is the plot of  the estimated  record probabilities \eqn{p_t} versus time.   The expected probabilities
-under the record classic model, \eqn{p_t=1/t},  are also plotted, together with bootstrap confidence  intervals.  Type 3 is
-the same  plot but on a logarithmic scale, so that the expected value is \eqn{-log(t)}.
+  Type 2 is the plot of the estimated record probabilities \eqn{p_t} versus
+  time. The expected probabilities under the classical record model, 
+  \eqn{p_t=1/t}, are also plotted, together with binomial confidence 
+  intervals. Type 3 is the same plot but on a logarithmic scale, so that the
+  expected value is \eqn{-log(t)}.
 
- Type  2 is the plot of the observed values \eqn{t \hat p_t}  versus time.  The expected values
-under the  classical record model are 1 for any value \eqn{t}, so that a cloud of points around 1 and  with no trend should be expected.  The estimated values
-are plotted, together with  bootstrap confidence  intervals. In addition,  a regression line  is fitted to the cloud of points and
-plotted together with  confidence  intervals of the response. If the classical record model is  true, the  confidence  band (in grey)
-should contain  the horizontal line equal to 1. Plots of type 2 are  easier to interpret than types 1 and 3.
+  Type 1 is the plot of the observed values \eqn{t \hat p_t} versus time.
+  The expected values under the classical record model are \eqn{1} for any
+  value \eqn{t}, so that a cloud of points around \eqn{1} and with no trend
+  should be expected. The estimated values are plotted, together with 
+  binomial confidence intervals. In addition, a regression line is fitted
+  to the cloud of points and plotted together with confidence intervals of
+  the response. If the classical record model is true, the confidence band 
+  (in grey) should contain the horizontal line equal to \eqn{1}. Plots of
+  type 1 are easier to interpret than types 2 and 3.
 }
 \examples{
-P_regression.plot(ZaragozaSeries,  plot=2, interval='errorbar', samples=200)
+P_regression.plot(ZaragozaSeries, plot = 1)
+P_regression.plot(ZaragozaSeries, plot = 2)
+P_regression.plot(ZaragozaSeries, plot = 3)
+P_regression.plot(series_rev(ZaragozaSeries), record = 'lower')
 
 }
 \seealso{
 \code{\link{P_regression.test}}
+}
+\author{
+Jorge Castillo-Mateo
 }

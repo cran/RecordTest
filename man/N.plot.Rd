@@ -2,65 +2,74 @@
 % Please edit documentation in R/N.plot.R
 \name{N.plot}
 \alias{N.plot}
-\title{Plot of the  mean number of records  up to time t}
+\title{Plot of the mean number of records up to time t}
 \usage{
 N.plot(
   XM_T,
-  record = "both",
-  interval = "ribbon",
+  weights = function(t) 1,
+  record = c("both", "upper", "lower"),
+  interval = c("ribbon", "errorbar"),
   conf = 0.95,
-  bootstrap = FALSE,
-  samples = 1000,
   colour = "salmon"
 )
 }
 \arguments{
-\item{XM_T}{A  matrix.}
+\item{XM_T}{A numeric vector, matrix (or data frame).}
 
-\item{record}{A character string indicating the type of record,   \code{"upper"}, \code{"lower"} or \code{"both"}.}
+\item{weights}{A function indicating the weight given to the different 
+records according to their position in the series,
+e.g., if \code{function(t) t-1} then \eqn{\omega_t = t-1}.}
 
-\item{interval}{A character string indicating the type of display of the confidence intervals,  \code{"ribbon"} (grey area) or \code{"errorbar"} (vertical lines).}
+\item{record}{A character string indicating the type of record, 
+\code{"upper"}, \code{"lower"} or \code{"both"}.}
+
+\item{interval}{A character string indicating the type of display of 
+the confidence intervals, \code{"ribbon"} (grey area) or 
+\code{"errorbar"} (vertical lines).}
 
 \item{conf}{Confidence level of the confidence intervals.}
 
-\item{bootstrap}{A logical flag. If \code{FALSE} calculates an asymptotically normal CI,
-if \code{TRUE}  calculates a  Monte Carlo CI.}
-
-\item{samples}{An integer  giving the number of replicates used  to calculate Monte Carlo  CI. Only used if \code{bootstrap = TRUE}.}
-
-\item{colour}{Colour used to plot the expected values of \eqn{N_t}, and the CI. See  \code{\link{ggplot}} for valid values.}
+\item{colour}{Colour used to plot the expected values of \eqn{N_t}, 
+and the CI.}
 }
 \value{
 A ggplot object.
 }
 \description{
-This function constructs a ggplot object  to compare  the  sample means  of the number of records
-in a vector  up to time  \eqn{t}, \eqn{\bar N_t},   and the expected values  \eqn{E(N_t)} under the classical record model.
+This function constructs a ggplot object to compare the sample
+  means of the number of records in a vector up to time \eqn{t}, 
+  \eqn{\bar N_t}, and the expected values \eqn{E(N_t)} under the classical 
+  record model.
 }
 \details{
-First, this function  calculates   the  sample means  of the number of records
-in a vector  up to time \eqn{t}. These sample means  \eqn{\bar N_t}  are calculated from the sample of \eqn{M}  values obtained from \eqn{M} vectors,
-the columns of matrix \code{XM_T}. Then, these values are plotted and  compared with the expected values
-  \eqn{E(N_t)} and their  confidence intervals (CI),  under the hypothesis of the classical record model.
+First, this function calculates the sample means of the number of records
+  in a vector up to time \eqn{t}. These sample means \eqn{\bar N_t} are 
+  calculated from the sample of \eqn{M} values obtained from \eqn{M} 
+  vectors, the columns of matrix \code{XM_T}. Then, these values are plotted
+  and compared with the expected values \eqn{E(N_t)} and their confidence 
+  intervals (CI), under the hypothesis of the classical record model.
 
- Two types of CI  of \eqn{E(N_t)}  can be built. The first uses the fact that,  under the classical record model,
- the statistic \eqn{\bar N_t} is asymptotically Normal.  The second is obtained  using a bootstrap approach,
+  The CI of \eqn{E(N_t)} uses the fact that, under the classical record 
+  model, the statistic \eqn{\bar N_t} is asymptotically Normal.
 }
 \examples{
-Zplot<-N.plot(ZaragozaSeries,  interval='errorbar', bootstrap=TRUE, samples=200)
+N.plot(ZaragozaSeries, weights = function(t) t-1, interval = 'errorbar')
+
+Zplot <- N.plot(ZaragozaSeries, record = 'lower')
 Zplot
+
 library(ggplot2)
-Zplot +
-  theme(axis.text = element_text(size = 18), legend.position = c(0.8,0.2),
-    legend.text = element_text(size = 25), axis.title = element_text(size = 30)) +
-  labs(title = expression(paste("Normal CI of ", N[t])),
-    caption = "Zaragoza Data",
-    x = expression(paste("t")),
-    y = expression(paste("Mean number of records ", bar(N)[t]))) +
-  scale_y_continuous(limits = c(1, 4.5)) +
-  guides(colour = guide_legend(order = 1,reverse=TRUE), shape = guide_legend(order = 2))
+# change the colour of the points
+colour_point <- 'black'
+Zplot + scale_colour_manual(name = '', values = c('Lower record' = colour_point)) 
+
+# remove legend
+Zplot + theme(legend.position = 'none')
 
 }
 \seealso{
-\code{\link{N_joint.test}},  \code{\link{N_normal.test}}
+\code{\link{N_normal.test}}, \code{\link{foster.test}}
+}
+\author{
+Jorge Castillo-Mateo
 }

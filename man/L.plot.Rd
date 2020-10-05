@@ -2,44 +2,44 @@
 % Please edit documentation in R/L.plot.R
 \name{L.plot}
 \alias{L.plot}
-\title{Plot of the  times of record}
+\title{Plot of the record times}
 \usage{
-L.plot(
-  XM_T,
-  record = "upper",
-  backward = FALSE,
-  colour_point = "salmon",
-  colour_line = "grey95"
-)
+L.plot(XM_T, colour_point = "skyblue3", colour_line = "grey95")
 }
 \arguments{
-\item{XM_T}{A numeric vector or matrix.}
+\item{XM_T}{A numeric vector, matrix (or data frame).}
 
-\item{record}{A character string indicating the type of record to be calculated, "upper" or "lower".}
+\item{colour_point}{Colour to plot points.}
 
-\item{backward}{Logical flag. If  \code{TRUE}, the  input vector is  reversed before calculating the  times of records.}
-
-\item{colour_point}{Colour  to plot  points.}
-
-\item{colour_line}{Colour  to plot lines.}
+\item{colour_line}{Colour to plot lines.}
 }
 \value{
 A ggplot object.
 }
 \description{
-This function constructs a ggplot object  to display  the  times of record.
+This function constructs a ggplot object to display the upper 
+  and lower record times for both forward and backward sequences.
 }
 \details{
-The function  can be applied to plot the record times in a vector (if argument \code{XM_T} is a vector)
- or to plot and compare the record times in a set of vectors (if argument \code{XM_T} is a matrix). In the latter case,
- the approach to obtain  the times of records is applied to each column of the matrix.
+The function can be applied to plot the record times in a vector 
+  (if argument \code{XM_T} is a vector) or to plot and compare the record 
+  times in a set of vectors (if argument \code{XM_T} is a matrix). In the 
+  latter case, the approach to obtain the record times is applied to each 
+  column of the matrix.
+  
+  A matrix of four panels is displayed for upper and lower records, and for
+  the forward and backward (\code{\link{series_rev}}) vectors.
 }
 \examples{
+Y <- c(1, 5, 3, 6, 6, 9, 2, 11, 17, 8)
+L.plot(Y)
 
-Y1<-c(1,5,3,6,6,9,2, 11, 17, 8)
-L.plot(Y1)
-L.plot(ZaragozaSeries)
+L.plot(ZaragozaSeries, colour_point = 1)
+
 }
 \seealso{
-\code{\link{L.rec}}, \code{\link{L_lr.test}}
+\code{\link{L.record}}, \code{\link{L_lr.test}}
+}
+\author{
+Jorge Castillo-Mateo
 }
