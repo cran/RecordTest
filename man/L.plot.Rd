@@ -2,43 +2,64 @@
 % Please edit documentation in R/L.plot.R
 \name{L.plot}
 \alias{L.plot}
-\title{Plot of the record times}
+\title{Times of Record Plot}
 \usage{
-L.plot(XM_T, colour_point = "skyblue3", colour_line = "grey95")
+L.plot(
+  X,
+  all = TRUE,
+  record = c("upper", "lower"),
+  point.col = "gray23",
+  point.alpha = 0.8,
+  line.col = "gray95"
+)
 }
 \arguments{
-\item{XM_T}{A numeric vector, matrix (or data frame).}
+\item{X}{A numeric vector, matrix (or data frame).}
 
-\item{colour_point}{Colour to plot points.}
+\item{all}{Logical. If \code{TRUE} (the default) the four types of record
+are displayed.}
 
-\item{colour_line}{Colour to plot lines.}
+\item{record}{If \code{all = FALSE}, a character string indicating the type
+of record to be calculated, "upper" or "lower".}
+
+\item{point.col, point.alpha}{Color and transparency of the points.}
+
+\item{line.col}{Color to plot lines.}
 }
 \value{
 A ggplot object.
 }
 \description{
-This function constructs a ggplot object to display the upper 
-  and lower record times for both forward and backward sequences.
+This function builds a ggplot object to display the upper 
+  and lower record times for both forward and backward directions.
 }
 \details{
 The function can be applied to plot the record times in a vector 
-  (if argument \code{XM_T} is a vector) or to plot and compare the record 
-  times in a set of vectors (if argument \code{XM_T} is a matrix). In the 
+  (if argument \code{X} is a vector) or to plot and compare the record 
+  times in a set of vectors (if argument \code{X} is a matrix). In the 
   latter case, the approach to obtain the record times is applied to each 
   column of the matrix.
   
-  A matrix of four panels is displayed for upper and lower records, and for
-  the forward and backward (\code{\link{series_rev}}) vectors.
+  If \code{all = TRUE}, a matrix of four panels is displayed for upper and
+  lower records, and for the forward and backward (\code{\link{series_rev}})
+  directions. Otherwise, only one type of forward record is displayed.
+  
+  An example of use of a plot with similar ideas is shown in Benestad 
+  (2004, Figures 3 and 8).
 }
 \examples{
 Y <- c(1, 5, 3, 6, 6, 9, 2, 11, 17, 8)
-L.plot(Y)
+L.plot(Y, all = FALSE)
 
-L.plot(ZaragozaSeries, colour_point = 1)
+L.plot(ZaragozaSeries, point.col = 1)
 
 }
+\references{
+Benestad RE (2004). “Record-Values, Nonstationarity Tests and Extreme Value Distributions.”
+\emph{Global and Planetary Change}, \strong{44}(1-4), 11-26.
+}
 \seealso{
-\code{\link{L.record}}, \code{\link{L_lr.test}}
+\code{\link{L.record}}
 }
 \author{
 Jorge Castillo-Mateo
