@@ -21,11 +21,15 @@
 #' @param variable Optional. A vector, containing other variable related 
 #'   to \code{X} and measured at the same times. Only used if 
 #'   \code{plot = FALSE}.
+#' @param type Character string indicating if \code{X} is shown with 
+#'   \code{"lines"} or \code{"points"}.
 #' @param col,alpha Character and numeric vectors of length four, respectively.
-#'   These arguments represent respectively the color and transparency of the
-#'   points: trivial record, upper records, lower records and observations
-#'   respectively. Vector names in the default are only indicative.
-#' @param shape Integer vector of length 3 indicating the shape of the points
+#'   These arguments represent respectively the colour and transparency of the
+#'   points or lines: trivial record, upper records, lower records and 
+#'   observations respectively. 
+#'   Vector names in the default are only indicative.
+#' @param shape If \code{type == "points"}. 
+#'   Integer vector of length 3 indicating the shape of the points
 #'   for forward records, backward records and observations.
 #'   Vector names in the default are only indicative.
 #' @param linetype Integer vector of length 2 indicating the line type of the
@@ -67,12 +71,14 @@ records <- function(X,
                     plot = TRUE, 
                     direction = c("forward", "backward", "both"),
                     variable, 
-                    col = c("T" = "black", "U" = "salmon", "L" = "skyblue", "O" = "limegreen"), 
-                    alpha = c("T" = 1, "U" = 1, "L" = 1, "O" = 0.5),
+                    type = c("lines", "points"),
+                    col = c("T" = "black", "U" = "salmon", "L" = "skyblue", "O" = "black"), 
+                    alpha = c("T" = 1, "U" = 1, "L" = 1, "O" = 1),
                     shape = c("F" = 19, "B" = 4, "O" = 19),
                     linetype = c("F" = 1, "B" = 2)) {
   
   direction <- match.arg(direction)
+  type <- match.arg(type)
   
   names(col)   <- NULL
   names(alpha) <- NULL
@@ -80,7 +86,7 @@ records <- function(X,
   
   Tlength <- length(X)
   
-  Xrev <- series_rev(X)
+  Xrev <- rev(X)
   I.FU <- I.record(X, record = "upper")
   I.FL <- I.record(X, record = "lower")
   I.BU <- I.record(Xrev, record = "upper")
@@ -114,14 +120,22 @@ records <- function(X,
       levels(recordFactor)[levels(recordFactor) == "-1"] <- "Forward Lower"
       levels(recordFactor)[levels(recordFactor) == "0"]  <- "Observation"
       levels(recordFactor)[levels(recordFactor) == "1"]  <- "Forward Upper"
-      recordUpper <- cummax(X)
-      recordLower <- cummin(X)
+      Xna <- X
+      Xna[is.na(X)] <- X[1]
+      recordUpper <- cummax(Xna)
+      recordLower <- cummin(Xna)
       
       graf <- graf +
         ggplot2::geom_step(ggplot2::aes(y = recordUpper), direction = "hv", colour = col[2], alpha = alpha[2], linetype = linetype[1]) +
-        ggplot2::geom_step(ggplot2::aes(y = recordLower), direction = "hv", colour = col[3], alpha = alpha[3], linetype = linetype[1]) +
-        ggplot2::geom_point(ggplot2::aes(y = X, colour = recordFactor, alpha = recordFactor, shape = recordFactor))
-      
+        ggplot2::geom_step(ggplot2::aes(y = recordLower), direction = "hv", colour = col[3], alpha = alpha[3], linetype = linetype[1])
+      if (type == "lines") {
+        graf <- graf + 
+          ggplot2::geom_line(ggplot2::aes(y = X), colour = col[4], alpha = alpha[4])
+      } else { # type == "points
+        graf <- graf + 
+          ggplot2::geom_point(ggplot2::aes(y = X, colour = recordFactor, alpha = recordFactor, shape = recordFactor))
+      }
+        
     } else if (direction == "backward") {
       # Backward
       I.B <- I.BU - I.BL
@@ -131,14 +145,22 @@ records <- function(X,
       levels(recordFactor.B)[levels(recordFactor.B) == "-1"] <- "Backward Lower"
       levels(recordFactor.B)[levels(recordFactor.B) == "0"]  <- "Observation"
       levels(recordFactor.B)[levels(recordFactor.B) == "1"]  <- "Backward Upper"
-      recordUpper.B <- cummax(Xrev)
-      recordLower.B <- cummin(Xrev)
+      Xrevna <- Xrev
+      Xrevna[is.na(Xrevna)] <- Xrev[1]
+      recordUpper.B <- cummax(Xrevna)
+      recordLower.B <- cummin(Xrevna)
       
       graf <- graf +
         ggplot2::geom_step(ggplot2::aes(x = rev(seq_len(Tlength)), y = recordUpper.B), direction = "vh", colour = col[2], alpha = alpha[2], linetype = linetype[2]) +
-        ggplot2::geom_step(ggplot2::aes(x = rev(seq_len(Tlength)), y = recordLower.B), direction = "vh", colour = col[3], alpha = alpha[3], linetype = linetype[2]) +
-        ggplot2::geom_point(ggplot2::aes(x = rev(seq_len(Tlength)), y = rev(X), colour = recordFactor.B, alpha = recordFactor.B, shape = recordFactor.B)) 
-        
+        ggplot2::geom_step(ggplot2::aes(x = rev(seq_len(Tlength)), y = recordLower.B), direction = "vh", colour = col[3], alpha = alpha[3], linetype = linetype[2])
+      if (type == "lines") {
+        graf <- graf + 
+          ggplot2::geom_line(ggplot2::aes(x = rev(seq_len(Tlength)), y = rev(X)), colour = col[4], alpha = alpha[4])
+      } else { # type == "points
+        graf <- graf + 
+          ggplot2::geom_point(ggplot2::aes(x = rev(seq_len(Tlength)), y = rev(X), colour = recordFactor.B, alpha = recordFactor.B, shape = recordFactor.B)) 
+      }
+      
     } else { # direction == "both"
       # Forward
       I.F <- I.FU - I.FL
@@ -148,8 +170,10 @@ records <- function(X,
       levels(recordFactor)[levels(recordFactor) == "-1"] <- "Forward Lower"
       levels(recordFactor)[levels(recordFactor) == "0"]  <- "Observation"
       levels(recordFactor)[levels(recordFactor) == "1"]  <- "Forward Upper"
-      recordUpper <- cummax(X)
-      recordLower <- cummin(X)
+      Xna <- X
+      Xna[is.na(Xna)] <- X[1]
+      recordUpper <- cummax(Xna)
+      recordLower <- cummin(Xna)
       # Backward
       I.B <- I.BU - I.BL
       recordFactor.B <- as.factor(I.B)
@@ -158,8 +182,10 @@ records <- function(X,
       levels(recordFactor.B)[levels(recordFactor.B) == "-1"] <- "Backward Lower"
       levels(recordFactor.B)[levels(recordFactor.B) == "0"]  <- "Observation"
       levels(recordFactor.B)[levels(recordFactor.B) == "1"]  <- "Backward Upper"
-      recordUpper.B <- cummax(Xrev)
-      recordLower.B <- cummin(Xrev)
+      Xrevna <- Xrev
+      Xrevna[is.na(Xrevna)] <- Xrev[1]
+      recordUpper.B <- cummax(Xrevna)
+      recordLower.B <- cummin(Xrevna)
       remove.F <- as.logical((recordFactor == "Observation") + (rev(recordFactor.B) != "Observation") == 2)
       remove.B <- as.logical((rev(recordFactor) != "Observation") + (recordFactor.B == "Observation") == 2)
       recordFactor[remove.F] <- "NA"
@@ -169,9 +195,15 @@ records <- function(X,
         ggplot2::geom_step(ggplot2::aes(x = rev(seq_len(Tlength)), y = recordUpper.B), direction = "vh", colour = col[2], alpha = alpha[2], linetype = linetype[2]) +
         ggplot2::geom_step(ggplot2::aes(x = rev(seq_len(Tlength)), y = recordLower.B), direction = "vh", colour = col[3], alpha = alpha[3], linetype = linetype[2]) +
         ggplot2::geom_step(ggplot2::aes(y = recordUpper), direction = "hv", colour = col[2], alpha = alpha[2], linetype = linetype[1]) +
-        ggplot2::geom_step(ggplot2::aes(y = recordLower), direction = "hv", colour = col[3], alpha = alpha[3], linetype = linetype[1]) +
-        ggplot2::geom_point(ggplot2::aes(x = rev(seq_len(Tlength)), y = rev(X), colour = recordFactor.B, alpha = recordFactor.B, shape = recordFactor.B)) +
-        ggplot2::geom_point(ggplot2::aes(y = X, colour = recordFactor, alpha = recordFactor, shape = recordFactor))
+        ggplot2::geom_step(ggplot2::aes(y = recordLower), direction = "hv", colour = col[3], alpha = alpha[3], linetype = linetype[1])
+      if (type == "lines") {
+        graf <- graf + 
+          ggplot2::geom_line(ggplot2::aes(y = X), colour = col[4], alpha = alpha[4])
+      } else { # type == "points
+        graf <- graf + 
+          ggplot2::geom_point(ggplot2::aes(x = rev(seq_len(Tlength)), y = rev(X), colour = recordFactor.B, alpha = recordFactor.B, shape = recordFactor.B)) +
+          ggplot2::geom_point(ggplot2::aes(y = X, colour = recordFactor, alpha = recordFactor, shape = recordFactor))
+      }
     }
     
     return(graf)

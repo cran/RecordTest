@@ -3,6 +3,23 @@
 \newcommand{\cpkg}{\href{https://CRAN.R-project.org/package=#1}{\pkg{#1}}}
 \newcommand{\issue}{\href{https://github.com/JorgeCastilloMateo/RecordTest/issues/#1}{(issue #1)}}
 
+\section{Changes in Version 2.1.0 (05 August 2021)}{
+  \subsection{NEW FEATURES}{
+    \itemize{
+      \item New function \code{change.point} to perform the Castillo-Mateo change-point detection tests was added. 
+      \item Previously, if the series had \code{NA} values, all the record indicators from that time took \code{NA} value. This made the functions return \code{NA} p-values, etc. Now the \code{NA} values are treated as non-records, i.e., \eqn{I_t = 0}, unless they are the first observation, i.e., \eqn{I_1 = 1}.
+      \item \code{records} function only allowed to show points, now it also shows lines.
+    }
+  }
+  \subsection{MODIFICATIONS}{
+    \itemize{
+      \item The three missing values of the \code{TX_Zaragoza} dataset now take the value \code{NA}, in previous Versions these values were imputed. This change does not affect the \code{ZaragozaSeries} dataset.
+      \item The \sQuote{MANUAL} help pages were updated.
+      \item The \sQuote{VIGNETTES} file was updated.
+    }
+  }
+}
+
 \section{Changes in Version 2.0.0 (13 February 2021)}{
   \subsection{NEW FEATURES}{
     \itemize{
@@ -18,7 +35,7 @@
   }
   \subsection{MODIFICATIONS}{
     \itemize{
-      \item The description of all the functions was updated and improved.
+      \item The \sQuote{MANUAL} help pages were updated.
       \item The \sQuote{VIGNETTES} file was updated.
       \item All functions have undergone a change in their arguments, providing new features in most cases.
       \item The functions \code{foster.test} and \code{foster.plot} now admit more statistics based on different combinations of records.
@@ -27,7 +44,7 @@
       \item The matrix \code{ZaragozaSeries} has more rows and one more column according to the changes in \code{TX_Zaragoza} and \code{series_uncor}.
       \item Functions have been joined or renamed as follows:
       \itemize{
-        \item From \code{L_global.test} renamed to \code{global.test}, and now a global statistic for different types of record can be computed for the tests with two-sided alternatives \code{p.test}, \code{chisq.test}, \code{lr.test} and \code{score.test}.
+        \item From \code{L_global.test} renamed to \code{global.test}, and now a global statistic for different types of record can be computed for the tests with two-sided alternatives \code{p.chisq.test}, \code{p.regression.test}, \code{lr.test} and \code{score.test}.
         \item From \code{N_normal.test}, \code{N_exactPB.test} and \code{P_exactPB.test} joint to \code{N.test}, and new features added.
         \item From \code{P_regression.test} and \code{P_regression.plot} renamed to \code{p.regression.test} and \code{p.plot}, and new features added.
         \item From \code{P_chisq.test} renamed to \code{p.chisq.test}.
@@ -79,7 +96,7 @@
   }
 }
 
-\section{Changes in Version 0.1.2 (9 February 2020)}{
+\section{Changes in Version 0.1.2 (09 February 2020)}{
   \subsection{OTHER CHANGES}{
     \itemize{
       \item Update by CRAN policies in some \sQuote{Imports} packages.

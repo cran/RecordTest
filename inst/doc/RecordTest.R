@@ -12,11 +12,11 @@ knitr::opts_chunk$set(
   digits = 5,
   tidy = FALSE,
   background = "#FFFF00",
-  fig.align = 'center',
+  fig.align = "center",
   warning = FALSE,
   message = FALSE
   )
-RNGkind(sample.kind = 'Rounding')
+RNGkind(sample.kind = "Rounding")
 options(width = 80, digits = 5)
 theme_set(theme_bw())
 
@@ -29,14 +29,14 @@ theme_set(theme_bw())
 ## ----Olympic data-------------------------------------------------------------
 library(RecordTest)
 library(ggpubr) # To join plots
-data(Olympic_records_200m)
+data(Olympic_records_200m, package = "RecordTest")
 
 or200m <- series_record(L_lower = Olympic_records_200m$time, 
                         R_lower = Olympic_records_200m$value,
                         Trows = 27)
 
 ## -----------------------------------------------------------------------------
-records(or200m, alpha = c(1,0,1,0)) + ggplot2::ylab("seconds")
+records(or200m, type = "points", alpha = c(1,0,1,0)) + ggplot2::ylab("seconds")
 
 ## -----------------------------------------------------------------------------
 N.plot(or200m, record = c(0,1,0,0))
@@ -45,8 +45,8 @@ N.plot(or200m, record = c(0,1,0,0))
 N.test(or200m, record = "lower", distribution = "poisson-binomial")
 
 ## ----records------------------------------------------------------------------
-data(TX_Zaragoza)
-records(TX_Zaragoza$TX, alpha = c(1, 1, 1, 0.05))
+data(TX_Zaragoza, package = "RecordTest")
+records(TX_Zaragoza$TX, alpha = c(1, 1, 1, 0.1))
 
 ## ----pre-process--------------------------------------------------------------
 TxZ365 <- series_split(TX_Zaragoza$TX, Mcols = 365)
@@ -73,24 +73,23 @@ foster.plot(TxZ) + ggplot2::ylim(-2.5, 2.5)
 ## -----------------------------------------------------------------------------
 foster.plot(TxZ, weights = function(t) t-1) + 
   ggplot2::ylim(-85, 85) +
-  ggplot2::geom_vline(xintercept = 45, linetype = "dashed")
+  ggplot2::geom_vline(xintercept = 44, linetype = "dashed")
 
 ## -----------------------------------------------------------------------------
 foster.test(TxZ, distribution = "normal", weights = function(t) t-1)
 foster.test(TxZ, distribution = "t", weights = function(t) t-1)
 
 ## -----------------------------------------------------------------------------
-ggpubr::ggarrange(p.plot(TxZ, record = c(1,1,0,0)) + 
-            ggplot2::ylim(0, 6),
-          p.plot(TxZ, record = c(0,0,1,1)) +
-            ggplot2::ylim(0, 6),
-          ncol = 2, nrow = 1)
+ggpubr::ggarrange(
+  p.plot(TxZ, record = c(1,1,0,0)) + ggplot2::ylim(0, 5),
+  p.plot(TxZ, record = c(0,0,1,1)) + ggplot2::ylim(0, 5),
+  ncol = 2, nrow = 1, common.legend = TRUE, legend = "bottom")
 
 ## -----------------------------------------------------------------------------
-p.regression.test(TxZ, record = 'upper')
-p.regression.test(TxZ, record = 'lower')
-p.regression.test(series_rev(TxZ), record = 'upper')
-p.regression.test(series_rev(TxZ), record = 'lower')
+p.regression.test(TxZ, record = "upper")
+p.regression.test(TxZ, record = "lower")
+p.regression.test(series_rev(TxZ), record = "upper")
+p.regression.test(series_rev(TxZ), record = "lower")
 
 ## -----------------------------------------------------------------------------
 set.seed(23)
@@ -115,4 +114,17 @@ ggpubr::ggarrange(
   p.plot(TxZ, plot = 2, record = c(1,1,0,0)),
   p.plot(TxZ, plot = 3, record = c(1,1,0,0)),
   ncol = 2, nrow = 2, common.legend = TRUE, legend = "bottom")
+
+## -----------------------------------------------------------------------------
+change.point(ZaragozaSeries)
+change.point(ZaragozaSeries, weights = function(t) sqrt(t), 
+  record = "d", simulate.p.value = TRUE, B = 10000)
+
+## -----------------------------------------------------------------------------
+test.result <- change.point(rowMeans(TxZ365, na.rm = TRUE))
+test.result
+
+## -----------------------------------------------------------------------------
+records(rowMeans(TxZ365, na.rm = TRUE)) + 
+  ggplot2::geom_vline(xintercept = test.result$estimate, colour = "red")
 

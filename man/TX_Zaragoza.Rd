@@ -19,21 +19,21 @@ A dataset containing the series of daily maximum temperature at
   located at the north-east (+41:39:42 N, -001:00:29 W) of Iberian Peninsula
   at 247 m above mean sea level. This series is obtained from the ECA&D 
   series but it has been transformed, by removing days February
-  29th and imputing the three missing values in the original series (by
-  exponential weighted moving average expanded four days to each side). The
-  variables are the following:
+  29th. The series has three \code{NA} missing observations corresponding 
+  to 31/03/1951, 04/01/1965, and 05/10/1965. The variables are the 
+  following:
 
 \itemize{
   \item STAID : Station identifier
   \item SOUID : Source identifier
   \item DATE  : Date YYYYMMDD
-  \item TX    : Maximum temperature in 0.1 ºC
+  \item TX    : Maximum temperature in 0.1ºC
   \item Q_TX  : quality code for TX (0='valid'; 1='suspect'; 9='missing')
 }
 }
 \references{
 Klein Tank AMG and Coauthors (2002). 
-Daily Dataset of 20th-century Surface Air Temperature and Precipitation 
+Daily Dataset of 20th-Century Surface Air Temperature and Precipitation 
 Series for the European Climate Assessment.
 \emph{International Journal of Climatology}, \strong{22}(12), 1441-1453.
 }
