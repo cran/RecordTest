@@ -37,16 +37,16 @@ to be shown, respectively. Logical values or 0,1 values are accepted.}
 and shape of the points. Every one of the four elements represents forward
 upper, forward lower, backward upper and backward lower, respectively.}
 
-\item{conf.int}{Logical. Indicates if the CIs are also shown.}
+\item{conf.int}{Logical. Indicates if the RIs are also shown.}
 
-\item{conf.level}{(If \code{conf.int == TRUE}) Confidence level of the CIs.}
+\item{conf.level}{(If \code{conf.int == TRUE}) Confidence level of the RIs.}
 
 \item{conf.aes}{(If \code{conf.int == TRUE}) A character string indicating 
-the aesthetic to display for the CIs, \code{"ribbon"} (grey area) or 
+the aesthetic to display for the RIs, \code{"ribbon"} (grey area) or 
 \code{"errorbar"} (vertical lines).}
 
 \item{conf.col}{Colour used to plot the expected value and (if 
-\code{conf.int == TRUE}) CIs.}
+\code{conf.int == TRUE}) RIs.}
 
 \item{smooth}{(If \code{plot = 1} or \code{3}) Logical. If \code{TRUE}, a
 smoothing in the probabilities is also plotted.}
@@ -92,18 +92,18 @@ Three different types of plots which aim to analyse the hypothesis
   The expected values under the classical record model are \eqn{1} for any
   value \eqn{t}, so that a cloud of points around \eqn{1} and with no trend
   should be expected. The estimated values are plotted, together with 
-  binomial confidence intervals (CIs). In addition, a smoothing function
+  binomial reference intervals (RIs). In addition, a smoothing function
   can be fitted to the cloud of points.
   
   Type 2 is the plot of the estimated record probabilities \eqn{p_t} versus
   time \eqn{t}. The expected probabilities under the classical record model, 
-  \eqn{p_t=1/t}, are also plotted, together with binomial CIs. 
+  \eqn{p_t=1/t}, are also plotted, together with binomial RIs. 
   
   Type 3 is the same plot but on a logarithmic scale, so that the
   expected value is \eqn{-\log(t)}. In this case, another smoothing 
   function can be fitted to the cloud of points.
   
-  Type 1 plot was proposed by Cebrián, Castillo-Mateo, Asín (2021), while 
+  Type 1 plot was proposed by Cebrián, Castillo-Mateo, Asín (2022), while 
   type 2 and 3 appear in Benestad (2003, Figures 8 and 9, 2004, Figure 4).
 }
 \examples{
@@ -137,9 +137,10 @@ Benestad RE (2004).
 “Record-Values, Nonstationarity Tests and Extreme Value Distributions.” 
 \emph{Global and Planetary Change}, \strong{44}(1–4), 11–26. 
 
-Cebrián A, Castillo-Mateo J and Asín J (2021).
+Cebrián AC, Castillo-Mateo J, Asín J (2022).
 “Record Tests to Detect Non Stationarity in the Tails with an Application to Climate Change.”
-Available at Research Square \doi{10.21203/rs.3.rs-214787/v1}
+\emph{Stochastic Environmental Research and Risk Assessment}, \strong{36}(2): 313-330. 
+\doi{10.1007/s00477-021-02122-w}
 }
 \seealso{
 \code{\link{p.regression.test}}

@@ -3,12 +3,12 @@
 \docType{data}
 \name{ZaragozaSeries}
 \alias{ZaragozaSeries}
-\title{Splitted and Uncorrelated Time Series \code{\link{TX_Zaragoza}}}
+\title{Split and Uncorrelated Time Series \code{\link{TX_Zaragoza}}}
 \format{
 A matrix with 70 rows and 76 columns.
 }
 \usage{
-data(ZaragozaSeries)
+data("ZaragozaSeries")
 }
 \description{
 The matrix resulting from the data preparation (or 

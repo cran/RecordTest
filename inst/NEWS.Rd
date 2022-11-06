@@ -3,6 +3,27 @@
 \newcommand{\cpkg}{\href{https://CRAN.R-project.org/package=#1}{\pkg{#1}}}
 \newcommand{\issue}{\href{https://github.com/JorgeCastilloMateo/RecordTest/issues/#1}{(issue #1)}}
 
+\section{Changes in Version 2.1.1 (03 November 2022)}{
+  \subsection{NEW FEATURES}{
+    \itemize{
+      \item New dataset \code{TX_Zaragoza29F} that includes Zaragoza series with the observations from the 29th of February.
+      \item Function \code{series_uncor} now admits any test introduced as an argument to test correlation or dependence across columns. Default is \code{cor.test}, which is the test used in previous versions.
+    }
+  }
+  \subsection{MODIFICATIONS}{
+    \itemize{
+      \item References update for the publication of Cebrian, Castillo-Mateo and Asin (2022) <doi:10.1007/s00477-021-02122-w> and Castillo-Mateo (2022) <doi:10.1007/s10651-022-00539-2>.
+      \item The \sQuote{MANUAL} help pages were updated.
+      \item Confidence intervals (CIs) are renamed to reference intervals (RIs) in the \sQuote{MANUAL} and legends for being a more appropriate definition for these intervals (no argument is modified).
+    }
+  }
+  \subsection{BUG FIXES}{
+    \itemize{
+      \item Functions \code{N.plot} and \code{p.plot} displayed all four types of records in the legend, even when only one type of record was plotted. Now the legend only shows the type of records that are plotted.
+    }
+  }
+}
+
 \section{Changes in Version 2.1.0 (05 August 2021)}{
   \subsection{NEW FEATURES}{
     \itemize{

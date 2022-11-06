@@ -62,7 +62,7 @@ The null hypothesis of the score tests is that in every vector
   Furthermore, the \code{"two.sided"} \code{alternative} is tested with 
   the usual Lagrange multiplier statistic, while the one-sided 
   \code{alternatives} use specific statistics based on scores. 
-  (See Cebrián, Castillo-Mateo and Asín (2021) for details on these tests.)
+  (See Cebrián, Castillo-Mateo and Asín (2022) for details on these tests.)
 
   If \code{alternative = "two.sided" & probabilities = "equal"}, under the
   null, the Lagrange multiplier statistic has an asymptotic \eqn{\chi^2} 
@@ -108,9 +108,10 @@ score.test(ZaragozaSeries, alternative = "greater", probabilities = "different",
 score.test(ZaragozaSeries, alternative = "greater", probabilities = "equal")
 }
 \references{
-Cebrián A, Castillo-Mateo J, Asín J (2021).
+Cebrián AC, Castillo-Mateo J, Asín J (2022).
 “Record Tests to Detect Non Stationarity in the Tails with an Application to Climate Change.”
-Available at Research Square \doi{10.21203/rs.3.rs-214787/v1}
+\emph{Stochastic Environmental Research and Risk Assessment}, \strong{36}(2): 313-330. 
+\doi{10.1007/s00477-021-02122-w}
 }
 \seealso{
 \code{\link{lr.test}}, \code{\link{global.test}}
