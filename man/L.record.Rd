@@ -16,10 +16,10 @@ calculated, "upper" or "lower".}
 to \code{FALSE}.}
 }
 \value{
-If \code{X} is a vector, the function returns a column matrix 
-  containing the record times. If \code{X} is a matrix, the function 
-  returns a list where each element is a vector indicating the record times 
-  of the corresponding \code{X} column.
+If \code{X} is a vector, the function returns a list containing the 
+  vector of record times. If \code{X} is a matrix, the function returns a 
+  list where each element is a vector indicating the record times of the 
+  corresponding \code{X} column.
 }
 \description{
 Returns the record times of the values in a vector.
@@ -50,6 +50,7 @@ L.record(Y)
 Arnold BC, Balakrishnan N, Nagaraja HN (1998). 
 \emph{Records}. 
 Wiley Series in Probability and Statistics. Wiley, New York.
+\doi{10.1002/9781118150412}.
 }
 \seealso{
 \code{\link{I.record}}, \code{\link{N.record}},

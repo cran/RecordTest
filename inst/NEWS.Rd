@@ -3,6 +3,27 @@
 \newcommand{\cpkg}{\href{https://CRAN.R-project.org/package=#1}{\pkg{#1}}}
 \newcommand{\issue}{\href{https://github.com/JorgeCastilloMateo/RecordTest/issues/#1}{(issue #1)}}
 
+\section{Changes in Version 2.2.0 (06 August 2023)}{
+  \subsection{NEW FEATURES}{
+    \itemize{
+      \item Implementation of "approximate" or "random" permutation tests with the argument \code{permutation.test} in the functions \code{change.point}, \code{foster.test}, and \code{N.test}. The tests use samples with repetition of permutations, they do not use all possible permutations. Unlike previous exact, asymptotic, or Monte Carlo tests, permutation tests still ensure test size by introducing a matrix \code{X} with dependent columns as an argument.
+    }
+  }
+  \subsection{MODIFICATIONS}{
+    \itemize{
+      \item References update for the new applied publication Castillo-Mateo, Cebrian and Asin (2023) <doi:10.1016/j.atmosres.2023.106934>.
+      \item \pkg{RecordTest} logo update.
+    }
+  }
+  \subsection{BUG FIXES}{
+    \itemize{
+      \item Function \code{records} when \code{plot = FALSE} returned the wrong backward record values. It returned the values of the forward series on the backward record times. This issue was fixed.
+      \item Function \code{L.record} returned a matrix instead of a list when all series had the same number of records. Function \code{R.record} returned incorrect output when all series had the same number of records or there were only one series. These issues were fixed and both functions return a list in any case.
+      \item Function \code{series_untie} now admits \code{NA} or \code{NaN} values without returning \code{NaN}'s.
+    }
+  }
+}
+
 \section{Changes in Version 2.1.2 (15 March 2023)}{
   \subsection{MODIFICATIONS}{
     \itemize{

@@ -1,4 +1,6 @@
 #' @title Record Indicators
+#' @aliases I.record.default I.record.numeric I.record.matrix I.record
+#' 
 #' @description Returns the record indicators of the values in a vector.
 #'   The record indicator for each value in a vector is a binary variable which
 #'   takes the value 1 if the corresponding value in the vector is a record and
@@ -6,6 +8,7 @@
 #'   
 #'   If the argument \code{X} is a matrix, then each column is treated as a 
 #'   different vector.
+#'   
 #' @details Let \eqn{\{X_1,\ldots,X_T\}} be a vector of random variables of 
 #'   size \eqn{T}. An observation \eqn{X_t} will be called an upper record 
 #'   value if its value exceeds that of all previous observations. An 
@@ -54,7 +57,6 @@
 #'   and \code{Inf} for lower records, so they are records only if they are 
 #'   placed at \eqn{t = 1}.
 #'  
-#' @aliases I.record.default I.record.numeric I.record.matrix I.record
 #' @param X A numeric vector, matrix (or data frame).
 #' @param record A character string indicating the type of record to be 
 #'   calculated, "upper" or "lower".
@@ -62,6 +64,7 @@
 #'   to \code{FALSE}.
 #' @return A binary matrix of the same length or dimension as \code{X}, 
 #'   indicating the record occurrence.
+#'   
 #' @author Jorge Castillo-Mateo
 #' @seealso \code{\link{L.record}}, 
 #'   \code{\link{N.record}}, \code{\link{Nmean.record}}, 
@@ -71,6 +74,8 @@
 #' Arnold BC, Balakrishnan N, Nagaraja HN (1998). 
 #' \emph{Records}. 
 #' Wiley Series in Probability and Statistics. Wiley, New York.
+#' \doi{10.1002/9781118150412}.
+#' 
 #' @examples
 #' X <- c(1, 5, 3, 6, 6, 9, 2, 11, 17, 8)
 #' I.record(X)
@@ -88,6 +93,7 @@ I.record <- function(X, record = c("upper", "lower"), weak = FALSE) {
 
 #' @rdname I.record
 #' @method I.record default
+#' @export I.record.default
 #' @export 
 I.record.default <- function(X, record = c("upper", "lower"), weak = FALSE) {
   
@@ -96,6 +102,7 @@ I.record.default <- function(X, record = c("upper", "lower"), weak = FALSE) {
 
 #' @rdname I.record
 #' @method I.record numeric
+#' @export I.record.numeric
 #' @export 
 I.record.numeric <- function(X, record = c("upper", "lower"), weak = FALSE) {
   
@@ -124,6 +131,7 @@ I.record.numeric <- function(X, record = c("upper", "lower"), weak = FALSE) {
 
 #' @rdname I.record
 #' @method I.record matrix
+#' @export I.record.matrix
 #' @export 
 I.record.matrix <- function(X, record = c("upper", "lower"), weak = FALSE) {
   
@@ -139,15 +147,17 @@ I.record.matrix <- function(X, record = c("upper", "lower"), weak = FALSE) {
 ##########################
 ### INTERNAL FUNCTIONS ###
 ##########################
-.I.record <- function(X, ...) { UseMethod(".I.record") }
+.I.record <- function(X, record, Trows) { UseMethod(".I.record", X) }
 
 #' @method .I.record default
+#' @export 
 .I.record.default <- function(X, record, Trows) {
   
   return(.I.record.matrix(X = as.matrix(X), record = record, Trows = Trows))
 }
 
 #' @method .I.record numeric
+#' @export 
 .I.record.numeric <- function(X, record, Trows) {
   
   if (anyNA(X)) {
@@ -162,6 +172,7 @@ I.record.matrix <- function(X, record = c("upper", "lower"), weak = FALSE) {
 }
 
 #' @method .I.record matrix
+#' @export 
 .I.record.matrix <- function(X, record, Trows) {
   
   if (anyNA(X)) {

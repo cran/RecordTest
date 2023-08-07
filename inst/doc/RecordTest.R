@@ -80,6 +80,11 @@ foster.test(TxZ, distribution = "normal", weights = function(t) t-1)
 foster.test(TxZ, distribution = "t", weights = function(t) t-1)
 
 ## -----------------------------------------------------------------------------
+set.seed(23)
+foster.test(TxZ365, distribution = "normal", weights = function(t) t-1, 
+  permutation.test = TRUE, B = 10000)
+
+## -----------------------------------------------------------------------------
 ggpubr::ggarrange(
   p.plot(TxZ, record = c(1,1,0,0)) + ggplot2::ylim(0, 5),
   p.plot(TxZ, record = c(0,0,1,1)) + ggplot2::ylim(0, 5),
